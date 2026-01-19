@@ -1,0 +1,20 @@
+
+
+# Ignore node modules at any level
+node_modules/
+**/node_modules/
+
+# Ignore distribution/build directories
+dist/
+**/dist/
+build/
+**/build/
+
+# Ignore Python bytecode / cache
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+.env

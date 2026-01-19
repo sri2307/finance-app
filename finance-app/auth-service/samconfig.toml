@@ -1,0 +1,14 @@
+version = 0.1
+
+[default.deploy.parameters]
+stack_name = "finance-app-backend"
+resolve_s3 = true
+s3_prefix = "finance-app-backend"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "DbUser=\"postgres.gqrjdatdzalpiqxcykyj\" DbHost=\"aws-1-ap-southeast-2.pooler.supabase.com\" DbPort=\"6543\" DbName=\"postgres\" AzureClientId=\"0b420f47-0671-4ee5-b918-895dd38314b5\" AzureTenantId=\"3274563b-285c-4c7b-9569-429c162da3e6\" Algorithm=\"HS256\""
+image_repositories = []
+confirm_changeset = true
+disable_rollback = true
+
+[default.global.parameters]
+region = "ap-south-1"
