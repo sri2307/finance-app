@@ -20,10 +20,13 @@ export const RequireAuth = () => {
     );
   }
 
+  // If Error (401) or No User -> Redirect to Analytics Login
   if (isError || !user) {
-    window.location.href = `${API_URL}/corporate/login?redirect=/restaurant${location.pathname}`;
+    // We use standard window.location for cross-domain redirect
+    window.location.href = `${API_URL}/corporate/login?redirect=/corporate${location.pathname}`;
     return null;
   }
 
+  //  If Success -> Render the Children (Dashboard, etc.)
   return <Outlet />;
 };

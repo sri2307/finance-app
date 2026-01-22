@@ -3,9 +3,9 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/tracker/',
+  base: '/restaurant/',
   server: {
-    port: 3001, // (Assuming this runs on a different port, e.g., 3001)
+    port: 3001, 
     proxy: {
       '/api': {
         target: 'https://d2ezff9rhb01hg.cloudfront.net',

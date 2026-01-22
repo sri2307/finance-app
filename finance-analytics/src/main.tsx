@@ -1,31 +1,31 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { Provider } from 'react-redux'; // 👈 Redux Provider
+import { Provider } from 'react-redux'; 
 import { store } from './app/store';
 
 import { PublicClientApplication } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 
 
-import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
-import { Login } from './features/auth/Login';
+import { ThemeProvider, CssBaseline } from '@mui/material';
 import { msalConfig } from './authConfig';
+import App from './App';
+import { BrowserRouter } from 'react-router-dom';
+import { corporateTheme } from './corporateTheme';
 
-// Initialize MSAL
 const msalInstance = new PublicClientApplication(msalConfig);
 
-const theme = createTheme({
-  palette: { mode: 'light' },
-});
+
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Provider store={store}> {/* Redux for RTK Query */}
+    <Provider store={store}> 
       <MsalProvider instance={msalInstance}>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={corporateTheme}>
           <CssBaseline />
-          {/* For now, we just render Login. Later add Router here. */}
-          <Login /> 
+          <BrowserRouter basename="/corporate"> 
+          <App/>
+          </BrowserRouter>
         </ThemeProvider>
       </MsalProvider>
     </Provider>

@@ -1,21 +1,39 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const apiSlice = createApi({
-  reducerPath: 'api',
-  baseQuery: fetchBaseQuery({
-    baseUrl: '/api/v1', // Proxies to Backend
-    credentials: 'include', // 👈 CRITICAL: Allows backend to set the HttpOnly Cookie
-  }),
-  endpoints: (builder) => ({
-    // The Mutation to send Microsoft Token to Backend
-    loginWithEntra: builder.mutation<any, { access_token: string }>({
-      query: (credentials) => ({
-        url: '/auth/exchange',
-        method: 'POST',
-        body: credentials,
-      }),
-    }),
-  }),
+const baseQuery = fetchBaseQuery({
+  baseUrl: "/api/v1",
+  credentials: "include",
 });
 
-export const { useLoginWithEntraMutation } = apiSlice;
+const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
+  let result = await baseQuery(args, api, extraOptions);
+
+  if (result.error && result.error.status === 401) {
+    if (args.url === "/auth/refresh") {
+      return result;
+    }
+
+    const refreshResult = await baseQuery(
+      { url: "/auth/refresh", method: "POST" },
+      api,
+      extraOptions,
+    );
+
+    if (refreshResult.data) {
+      result = await baseQuery(args, api, extraOptions);
+    } else {
+      const currentPath = window.location.pathname;
+      if (!currentPath.includes("/login")) {
+        window.location.href = `/corporate/login?redirect=${encodeURIComponent(window.location.href)}`;
+      }
+    }
+  }
+  return result;
+};
+
+export const apiSlice = createApi({
+  reducerPath: "api",
+  baseQuery: baseQueryWithReauth,
+  tagTypes: ["User"],
+  endpoints: () => ({}),
+});

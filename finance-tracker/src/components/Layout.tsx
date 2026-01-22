@@ -1,18 +1,16 @@
 import { Outlet } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button, Box, Container, CircularProgress } from '@mui/material';
 import { useGetSessionQuery, useLogoutMutation } from '../features/auth/authApi';
+import { API_URL } from '../variables';
 
-const AUTH_APP_URL = 'https://d2ezff9rhb01hg.cloudfront.net'
 
 export const Layout = () => {
-  // 1. Automatically fetch user on load
   const { data: user, isLoading } = useGetSessionQuery();
   const [logout] = useLogoutMutation();
 
   const handleLogout = async () => {
     await logout().unwrap();
-    // Redirect to Analytics/Login App
-    window.location.href = `${AUTH_APP_URL}/login`;
+    window.location.href = `${API_URL}/corporate/login`;
   };
 
   if (isLoading) {
@@ -25,11 +23,10 @@ export const Layout = () => {
 
   return (
     <Box sx={{ flexGrow: 1, minHeight: '100vh', bgcolor: 'background.default' }}>
-      {/* Top Navigation Bar */}
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Finance Tracker
+            Restaurant App
           </Typography>
           
           {user ? (
@@ -42,14 +39,13 @@ export const Layout = () => {
               </Button>
             </Box>
           ) : (
-            <Button color="inherit" href={`${AUTH_APP_URL}/login`}>
+            <Button color="inherit" href={`${API_URL}/corporate/login`}>
               Login
             </Button>
           )}
         </Toolbar>
       </AppBar>
 
-      {/* Main Content Area */}
       <Container maxWidth="lg" sx={{ mt: 4 }}>
         <Outlet />
       </Container>
